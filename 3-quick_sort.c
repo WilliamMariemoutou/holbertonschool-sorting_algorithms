@@ -13,15 +13,17 @@
  */
 void quick_sort(int *array, size_t size)
 {
-	int lb, ub, i, j, pi, top = -1, temp, k;
-	size_t max = 1024;
+	int lb, ub, i, j, pi, top;
+	int temp, k;
+	int pivot;
 	int stack[1024];
 
 	if (array == NULL || size < 2)
 		return;
 
 	lb = 0;
-	ub = size - 1;
+	ub = (int)size - 1;
+	top = -1;
 
 	stack[++top] = lb;
 	stack[++top] = ub;
@@ -31,7 +33,7 @@ void quick_sort(int *array, size_t size)
 		ub = stack[top--];
 		lb = stack[top--];
 
-		int pivot = array[ub];
+		pivot = array[ub];
 		i = lb - 1;
 
 		for (j = lb; j < ub; j++)
@@ -43,9 +45,9 @@ void quick_sort(int *array, size_t size)
 				array[i] = array[j];
 				array[j] = temp;
 
-				for (k = 0; k < size; k++)
+				for (k = 0; k < (int)size; k++)
 				{
-					if (k != size - 1)
+					if (k != (int)size - 1)
 						printf("%d, ", array[k]);
 					else
 						printf("%d\n", array[k]);
@@ -57,9 +59,9 @@ void quick_sort(int *array, size_t size)
 		array[i + 1] = array[ub];
 		array[ub] = temp;
 
-		for (k = 0; k < size; k++)
+		for (k = 0; k < (int)size; k++)
 		{
-			if (k != size - 1)
+			if (k != (int)size - 1)
 				printf("%d, ", array[k]);
 			else
 				printf("%d\n", array[k]);
