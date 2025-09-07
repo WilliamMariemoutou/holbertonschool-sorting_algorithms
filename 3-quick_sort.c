@@ -11,59 +11,69 @@
  *
  *  Return: the time complexity
  */
-void quick_sort(int *array, size_t size)
+void quick_sort(int *array, size_t size);
+
+static void swap(int *a, int *b)
 {
-	int lb, ub, i, j, tmp, pivot;
-	void recursive(int *arr, int lb, int ub);
+	int tmp;
+	tmp = *a;
+	*a = *b;
+	*b = tmp;
+}
 
-	if (array == NULL || size < 2)
-		return;
+static int lomuto_partition(int *array, int lb, int ub, size_t size)
+{
+	int pivot, i, j;
 
-	recursive(array, 0, (int)size - 1);
-
-	void recursive(int *arr, int lb, int ub)
+	pivot = array[ub];
+	i = lb;
+	for (j = lb; j < ub; j++)
 	{
-		int k;
-
-		if (lb < ub)
+		if (array[j] < pivot)
 		{
-			pivot = arr[ub];
-			i = lb;
-			for (j = lb; j < ub; j++)
+			if (i != j)
 			{
-				if (arr[j] < pivot)
+				swap(&array[i], &array[j]);
+				for (i = 0; i < (int)size; i++)
 				{
-					if (i != j)
-					{
-						tmp = arr[i];
-						arr[i] = arr[j];
-						arr[j] = tmp;
-						for (k = 0; k < (int)size; k++)
-						{
-							printf("%d", arr[k]);
-							if (k != (int)size - 1)
-								printf(", ");
-						}
-						printf("\n");
-					}
-					i++;
-				}
-			}
-			if (i != ub)
-			{
-				tmp = arr[i];
-				arr[i] = arr[ub];
-				arr[ub] = tmp;
-				for (k = 0; k < (int)size; k++)
-				{
-					printf("%d", arr[k]);
-					if (k != (int)size - 1)
+					printf("%d", array[i]);
+					if (i != (int)size - 1)
 						printf(", ");
 				}
 				printf("\n");
 			}
-			recursive(arr, lb, i - 1);
-			recursive(arr, i + 1, ub);
+			i++;
 		}
 	}
+	if (i != ub)
+	{
+		swap(&array[i], &array[ub]);
+		for (j = 0; j < (int)size; j++)
+		{
+			printf("%d", array[j]);
+			if (j != (int)size - 1)
+				printf(", ");
+		}
+		printf("\n");
+	}
+	return (i);
+}
+
+static void quick_sort_recursive(int *array, int lb, int ub, size_t size)
+{
+	int p;
+
+	if (lb < ub)
+	{
+		p = lomuto_partition(array, lb, ub, size);
+		quick_sort_recursive(array, lb, p - 1, size);
+		quick_sort_recursive(array, p + 1, ub, size);
+	}
+}
+
+void quick_sort(int *array, size_t size)
+{
+	if (array == NULL || size < 2)
+		return;
+	quick_sort_recursive(array, 0, (int)size - 1, size);
 }
