@@ -11,73 +11,53 @@
  *
  *  Return: the time complexity
  */
+void quick_sort(int *array, size_t size);
+
+static int lomuto_partition(int *array, int lb, int ub, size_t size)
+{
+    int pivot, i, j, tmp;
+
+    pivot = array[ub];
+    i = lb;
+
+    for (j = lb; j < ub; j++)
+    {
+        if (array[j] < pivot)
+        {
+            if (i != j)
+            {
+                tmp = array[i];
+                array[i] = array[j];
+                array[j] = tmp;
+            }
+            i++;
+        }
+    }
+
+    if (i != ub)
+    {
+        tmp = array[i];
+        array[i] = array[ub];
+        array[ub] = tmp;
+    }
+
+    return i;
+}
+
+static void quick_sort_recursive(int *array, int lb, int ub, size_t size)
+{
+    int pivot_index;
+    if (lb < ub)
+    {
+        pivot_index = lomuto_partition(array, lb, ub, size);
+        quick_sort_recursive(array, lb, pivot_index - 1, size);
+        quick_sort_recursive(array, pivot_index + 1, ub, size);
+    }
+}
+
 void quick_sort(int *array, size_t size)
 {
-	int lb, ub, i, j, pi, top;
-	int temp, k;
-	int pivot;
-	int stack[1024];
-
-	if (array == NULL || size < 2)
-		return;
-
-	lb = 0;
-	ub = (int)size - 1;
-	top = -1;
-
-	stack[++top] = lb;
-	stack[++top] = ub;
-
-	while (top >= 0)
-	{
-		ub = stack[top--];
-		lb = stack[top--];
-
-		pivot = array[ub];
-		i = lb - 1;
-
-		for (j = lb; j < ub; j++)
-		{
-			if (array[j] <= pivot)
-			{
-				i++;
-				temp = array[i];
-				array[i] = array[j];
-				array[j] = temp;
-
-				for (k = 0; k < (int)size; k++)
-				{
-					if (k != (int)size - 1)
-						printf("%d, ", array[k]);
-					else
-						printf("%d\n", array[k]);
-				}
-			}
-		}
-
-		temp = array[i + 1];
-		array[i + 1] = array[ub];
-		array[ub] = temp;
-
-		for (k = 0; k < (int)size; k++)
-		{
-			if (k != (int)size - 1)
-				printf("%d, ", array[k]);
-			else
-				printf("%d\n", array[k]);
-		}
-
-		pi = i + 1;
-
-		if (pi - 1 > lb)
-		{
-			stack[++top] = lb;
-			stack[++top] = pi - 1;
-		}
-		if (pi + 1 < ub)
-		{
-			stack[++top] = pi + 1;
-			stack[++top] = ub;
-		}
-	}
+    if (array == NULL || size < 2)
+        return;
+    quick_sort_recursive(array, 0, (int)size - 1, size);
 }
