@@ -11,9 +11,11 @@
  *
  *  Return: the time complexity
  */
+#include <stddef.h>
+
 void quick_sort(int *array, size_t size);
 
-static int lomuto_partition(int *array, int lb, int ub, size_t size)
+static int lomuto_partition(int *array, int lb, int ub)
 {
     int pivot, i, j, tmp;
 
@@ -44,14 +46,14 @@ static int lomuto_partition(int *array, int lb, int ub, size_t size)
     return i;
 }
 
-static void quick_sort_recursive(int *array, int lb, int ub, size_t size)
+static void quick_sort_recursive(int *array, int lb, int ub)
 {
     int pivot_index;
     if (lb < ub)
     {
-        pivot_index = lomuto_partition(array, lb, ub, size);
-        quick_sort_recursive(array, lb, pivot_index - 1, size);
-        quick_sort_recursive(array, pivot_index + 1, ub, size);
+        pivot_index = lomuto_partition(array, lb, ub);
+        quick_sort_recursive(array, lb, pivot_index - 1);
+        quick_sort_recursive(array, pivot_index + 1, ub);
     }
 }
 
@@ -59,5 +61,5 @@ void quick_sort(int *array, size_t size)
 {
     if (array == NULL || size < 2)
         return;
-    quick_sort_recursive(array, 0, (int)size - 1, size);
+    quick_sort_recursive(array, 0, (int)size - 1);
 }
