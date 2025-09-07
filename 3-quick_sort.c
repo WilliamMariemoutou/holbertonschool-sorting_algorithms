@@ -11,6 +11,9 @@
  *
  *  Return: the time complexity
  */
+#include <stdio.h>
+#include <stddef.h>
+
 void quick_sort(int *array, size_t size);
 
 static void swap(int *a, int *b)
@@ -21,9 +24,23 @@ static void swap(int *a, int *b)
 	*b = tmp;
 }
 
+static void print_array_size(int *array, size_t size)
+{
+	size_t i;
+
+	for (i = 0; i < size; i++)
+	{
+		printf("%d", array[i]);
+		if (i != size - 1)
+			printf(", ");
+	}
+	printf("\n");
+}
+
 static int lomuto_partition(int *array, int lb, int ub, size_t size)
 {
-	int pivot, i, j;
+	int pivot;
+	int i, j;
 
 	pivot = array[ub];
 	i = lb;
@@ -34,13 +51,7 @@ static int lomuto_partition(int *array, int lb, int ub, size_t size)
 			if (i != j)
 			{
 				swap(&array[i], &array[j]);
-				for (i = 0; i < (int)size; i++)
-				{
-					printf("%d", array[i]);
-					if (i != (int)size - 1)
-						printf(", ");
-				}
-				printf("\n");
+				print_array_size(array, size);
 			}
 			i++;
 		}
@@ -48,15 +59,9 @@ static int lomuto_partition(int *array, int lb, int ub, size_t size)
 	if (i != ub)
 	{
 		swap(&array[i], &array[ub]);
-		for (j = 0; j < (int)size; j++)
-		{
-			printf("%d", array[j]);
-			if (j != (int)size - 1)
-				printf(", ");
-		}
-		printf("\n");
+		print_array_size(array, size);
 	}
-	return (i);
+	return i;
 }
 
 static void quick_sort_recursive(int *array, int lb, int ub, size_t size)
