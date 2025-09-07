@@ -13,23 +13,25 @@
  */
 void quick_sort(int *array, size_t size)
 {
-	size_t lb, ub, i, j, pi, k;
-	int pivot, temp;
-	size_t stack[1024];
-	int top = -1;
+	int lb, ub, i, j, pi, top = -1, temp, k;
+	size_t max = 1024;
+	int stack[1024];
 
 	if (array == NULL || size < 2)
 		return;
 
-	stack[++top] = 0;
-	stack[++top] = size - 1;
+	lb = 0;
+	ub = size - 1;
+
+	stack[++top] = lb;
+	stack[++top] = ub;
 
 	while (top >= 0)
 	{
 		ub = stack[top--];
 		lb = stack[top--];
 
-		pivot = array[ub];
+		int pivot = array[ub];
 		i = lb - 1;
 
 		for (j = lb; j < ub; j++)
@@ -42,8 +44,12 @@ void quick_sort(int *array, size_t size)
 				array[j] = temp;
 
 				for (k = 0; k < size; k++)
-					printf("%d ", array[k]);
-				printf("\n");
+				{
+					if (k != size - 1)
+						printf("%d, ", array[k]);
+					else
+						printf("%d\n", array[k]);
+				}
 			}
 		}
 
@@ -52,17 +58,20 @@ void quick_sort(int *array, size_t size)
 		array[ub] = temp;
 
 		for (k = 0; k < size; k++)
-			printf("%d ", array[k]);
-		printf("\n");
+		{
+			if (k != size - 1)
+				printf("%d, ", array[k]);
+			else
+				printf("%d\n", array[k]);
+		}
 
 		pi = i + 1;
 
-		if (pi > 0 && pi - 1 > lb)
+		if (pi - 1 > lb)
 		{
 			stack[++top] = lb;
 			stack[++top] = pi - 1;
 		}
-
 		if (pi + 1 < ub)
 		{
 			stack[++top] = pi + 1;
