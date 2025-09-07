@@ -11,55 +11,59 @@
  *
  *  Return: the time complexity
  */
-#include <stddef.h>
-
-void quick_sort(int *array, size_t size);
-
-static int lomuto_partition(int *array, int lb, int ub)
-{
-    int pivot, i, j, tmp;
-
-    pivot = array[ub];
-    i = lb;
-
-    for (j = lb; j < ub; j++)
-    {
-        if (array[j] < pivot)
-        {
-            if (i != j)
-            {
-                tmp = array[i];
-                array[i] = array[j];
-                array[j] = tmp;
-            }
-            i++;
-        }
-    }
-
-    if (i != ub)
-    {
-        tmp = array[i];
-        array[i] = array[ub];
-        array[ub] = tmp;
-    }
-
-    return i;
-}
-
-static void quick_sort_recursive(int *array, int lb, int ub)
-{
-    int pivot_index;
-    if (lb < ub)
-    {
-        pivot_index = lomuto_partition(array, lb, ub);
-        quick_sort_recursive(array, lb, pivot_index - 1);
-        quick_sort_recursive(array, pivot_index + 1, ub);
-    }
-}
-
 void quick_sort(int *array, size_t size)
 {
-    if (array == NULL || size < 2)
-        return;
-    quick_sort_recursive(array, 0, (int)size - 1);
+	int lb, ub, i, j, tmp, pivot;
+	void recursive(int *arr, int lb, int ub);
+
+	if (array == NULL || size < 2)
+		return;
+
+	recursive(array, 0, (int)size - 1);
+
+	void recursive(int *arr, int lb, int ub)
+	{
+		int k;
+
+		if (lb < ub)
+		{
+			pivot = arr[ub];
+			i = lb;
+			for (j = lb; j < ub; j++)
+			{
+				if (arr[j] < pivot)
+				{
+					if (i != j)
+					{
+						tmp = arr[i];
+						arr[i] = arr[j];
+						arr[j] = tmp;
+						for (k = 0; k < (int)size; k++)
+						{
+							printf("%d", arr[k]);
+							if (k != (int)size - 1)
+								printf(", ");
+						}
+						printf("\n");
+					}
+					i++;
+				}
+			}
+			if (i != ub)
+			{
+				tmp = arr[i];
+				arr[i] = arr[ub];
+				arr[ub] = tmp;
+				for (k = 0; k < (int)size; k++)
+				{
+					printf("%d", arr[k]);
+					if (k != (int)size - 1)
+						printf(", ");
+				}
+				printf("\n");
+			}
+			recursive(arr, lb, i - 1);
+			recursive(arr, i + 1, ub);
+		}
+	}
 }
